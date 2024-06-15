@@ -22,13 +22,12 @@ const Weather = () => {
     'https://api.openweathermap.org/data/2.5/weather?units=metric&q='
 
   useEffect(() => {
-    // Check local storage for default city on component mount
+
     const storedDefaultCity = localStorage.getItem('defaultCity')
     if (storedDefaultCity) {
       setDefaultCity(storedDefaultCity)
     }
 
-    // Retrieve weather data from localStorage on component mount
     const storedWeatherData = localStorage.getItem('weatherData')
     if (storedWeatherData) {
       setStoredWeather(JSON.parse(storedWeatherData))
@@ -36,21 +35,18 @@ const Weather = () => {
   }, [])
 
   useEffect(() => {
-    // Save default city to local storage whenever defaultCity state changes
     if (defaultCity) {
       localStorage.setItem('defaultCity', defaultCity)
     }
   }, [defaultCity])
 
   useEffect(() => {
-    // Store the weather data in localStorage whenever storedWeather changes
     if (storedWeather) {
       localStorage.setItem('weatherData', JSON.stringify(storedWeather))
     }
   }, [storedWeather])
 
   useEffect(() => {
-    // Fetch weather data when default city changes or on initial load
     if (defaultCity) {
       fetchWeather(defaultCity)
     }
@@ -63,7 +59,6 @@ const Weather = () => {
       const weatherData = response.data
       setWeather(weatherData)
       setStoredWeather(weatherData)
-      // Send weather data to backend
       sendWeatherToBackend(weatherData)
     } catch (error) {
       console.error('Error fetching the weather data', error)
@@ -74,7 +69,7 @@ const Weather = () => {
   const sendWeatherToBackend = async (weatherData: WeatherData) => {
     try {
       const response = await axios.post(
-        `http://localhost:3000/history/${userId}`,
+        `https://weather-app-backend-8tro.onrender.com/history/${userId}`,
         {
           city: weatherData.name,
           temperature: weatherData.main.temp,
@@ -101,18 +96,18 @@ const Weather = () => {
   }
 
   return (
-    <div className='mx-auto mt-20 w-full max-w-lg'>
+    <div className='mx-auto mt-20 w-full max-w-lg px-4 md:px-6 lg:px-8'>
       <div className='rounded-2xl bg-gradient-to-r from-pink-500 to-yellow-300 p-8 text-center text-white shadow-lg dark:from-gray-700 dark:to-gray-900'>
         <div className='mb-4'>
           <input
             type='text'
             placeholder='Enter city name'
-            className='mr-4 rounded-full bg-white p-4 text-gray-700 focus:outline-none dark:bg-gray-800 dark:text-white'
+            className='w-full max-w-xs rounded-full bg-white p-4 text-gray-700 focus:outline-none dark:bg-gray-800 dark:text-white'
             value={city}
             onChange={e => setCity(e.target.value)}
           />
           <button
-            className='rounded-full bg-white p-4 text-gray-700 focus:outline-none dark:bg-gray-800 dark:text-white'
+            className='mt-4 w-full max-w-xs rounded-full bg-white p-4 text-gray-700 focus:outline-none dark:bg-gray-800 dark:text-white md:mt-0 md:ml-4'
             onClick={() => {
               setDefaultCity('')
               fetchWeather(city)
@@ -121,7 +116,7 @@ const Weather = () => {
             <img src='/images/search.png' alt='search' className='w-4' />
           </button>
           <button
-            className='ml-4 rounded-full bg-white p-4 text-gray-700 focus:outline-none dark:bg-gray-800 dark:text-white'
+            className='mt-4 w-full max-w-xs rounded-full bg-white p-4 text-gray-700 focus:outline-none dark:bg-gray-800 dark:text-white md:mt-0 md:ml-4'
             onClick={clearWeatherData}
           >
             Clear
@@ -142,8 +137,8 @@ const Weather = () => {
               {Math.round(storedWeather.main.temp)}°c
             </h1>
             <h2 className='mt-2 text-4xl font-medium'>{storedWeather.name}</h2>
-            <div className='mt-8 flex justify-around'>
-              <div className='flex items-center'>
+            <div className='mt-8 flex flex-wrap justify-around'>
+              <div className='flex items-center mb-4 md:mb-0'>
                 <img
                   src='/images/humidity.png'
                   alt='humidity'
@@ -164,7 +159,7 @@ const Weather = () => {
             </div>
           </div>
         ) : null}
-        <div className='grid grid-cols-2 gap-4'>
+        <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
           {predefinedLocations.map(location => (
             <div key={location.name} className='rounded-xl p-4 shadow-md'>
               <div className='rounded-xl bg-white p-4 text-gray-700 dark:bg-gray-800 dark:text-white'>

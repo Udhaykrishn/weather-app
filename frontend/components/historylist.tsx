@@ -16,7 +16,7 @@ const HistoryList = () => {
       setIsLoading(true)
       try {
         const result = await axios.get(
-          `http://localhost:3000/history/${userId}`
+          `https://weather-app-backend-8tro.onrender.com/history/${userId}`
         )
         setHistory(result.data)
       } catch (error: any) {
