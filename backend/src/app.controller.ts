@@ -5,6 +5,7 @@ import {
     Res,
     BadRequestException,
     Logger,
+    Get,
   } from "@nestjs/common";
   import { Request, Response } from "express";
   import { Webhook } from "svix";
@@ -20,9 +21,14 @@ import {
       private readonly config: ConfigService
     ) {}
 
+    @Get()
+    async getFun(){
+      console.log("Hello world")
+    }
   
     @Post()
     async webhook(@Req() req: Request, @Res() response: Response) {
+      console.log("Error")
       const secret = this.config.get<string>("WEBHOOK_SECRET");
       const payload = JSON.stringify(req.body);
       const headers = req.headers;
