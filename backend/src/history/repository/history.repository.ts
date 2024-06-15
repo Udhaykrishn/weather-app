@@ -8,13 +8,10 @@ export class HistoryRepository{
     constructor(private readonly prisma:PrismaService){}
 
     async findMany(userId:string):Promise<History[]>{
-        try {
             return this.prisma.history.findMany({
-                where:{userId}
+                where:{userId},
+                orderBy:{createdAt:"desc"}
             })
-        } catch (error:any) {
-            throw new Error(error.messgae)
-        }
     }
 
     async create(userId:string,data:Omit<Prisma.HistoryCreateInput,"user">):Promise<History>{
