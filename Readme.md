@@ -28,7 +28,9 @@ The Weather App uses Clerk for authentication. If you don't have an account, you
 - React
 - Next.js
 - Tailwind CSS
+- Shadcn UI
 - Clerk for authentication
+- Nest.js
 
 ## Contributing
 
